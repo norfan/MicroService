@@ -1,0 +1,126 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>聊天室</title>
+<style type="text/css">
+* {
+	font-size: 12px;
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+#main {
+	margin: 20px auto;
+	text-align: center;
+	width: 800px;
+	height: 500px;
+	border: solid 1px #ccc;
+}
+
+.info {
+	height: 30px;
+	line-height: 30px;
+}
+
+.btn {
+	border: solid 1px #ccc;
+	width: 50px;
+	height: 22px;
+}
+
+.txt {
+	border: solid 1px #ccc;
+	width: 160px;
+	height: 22px;
+}
+
+#self {
+	width: 50px;
+	background-color: #444;
+}
+
+#friend {
+	width: 250px;
+	background-color:#efefef;
+}
+
+#chat {
+	width: 500px;
+}
+
+#self,#friend,#chat {
+	height: 500px;
+	float: left;
+	
+}
+
+#content {
+	height: 380px;
+	background-color:#f6f6f6;
+}
+
+#talk {
+	height: 120px;
+}
+
+#friend ul li {
+	list-style-type:none;
+	width: 248px;
+	height: 55px;
+	line-height:55px;
+}
+
+#friend .head {
+	width: 45px;
+	height: 45px;
+	float: left;
+	margin:5px;
+	background:url("images/head01.png");
+}
+#friend .group{background:url("images/head02.png");}
+#friend .cur{background-color:#d3d3d3;}
+.search{height:26px; width:240px; margin:10px 5px; text-align:center;}
+.username{float:left;}
+#toolDiv{width:490px;height:22px;border-top:#ccc solid 1px; padding:5px;text-align:left;}
+#sendDiv{text-align:right;padding:2px 10px;}
+#msgTxt{width:500px;height:60px;}
+</style>
+</head>
+<body>
+	<div id="main">
+		<noscript>貌似你的浏览器不支持web socket.</noscript>
+		<div id="self"></div>
+		<div id="friend">
+			<div class="search">
+				<input type="text" class="txt" id="code" value="" />
+				<input type="button" class="btn" id="search" value="搜 索" />
+			</div>
+			<ul>
+				<li><span class="head"></span><span class="username">名称1</span></li>
+				<li class="cur"><span class="head group"></span><span class="username">名称3</span></li>
+			</ul>
+		</div>
+		<div id="chat">
+			<div id="content"></div>
+			<div id="talk">
+				<div id="toolDiv">
+					<img th:src="@{images/tool.png}"/>
+				</div>
+				<div id="msg">
+					<textarea id="msgTxt" ></textarea>
+				</div>
+				<div id="sendDiv">
+					<input type="button" class="btn" id="send" value="发送(S)" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+<script th:src="@{js/sockjs.min.js}"></script>
+<script th:src="@{js/stomp.js}"></script>
+<script type="text/javascript">
+	
+</script>
+</html>

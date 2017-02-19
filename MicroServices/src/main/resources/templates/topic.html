@@ -1,0 +1,90 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>订阅号</title>
+<style type="text/css">
+* {
+	font-size: 12px;
+	border: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+
+body{padding:50px;}
+
+.info {
+	height: 30px;
+	line-height: 30px;
+}
+
+.btn {
+	border: solid 1px #ccc;
+	width: 60px;
+	height: 22px;
+}
+
+.txt {
+	border: solid 1px #ccc;
+	width: 180px;
+	height: 22px;
+}
+</style>
+</head>
+<body>
+	<noscript>貌似你的浏览器不支持web socket.</noscript>
+	<div class="info">
+		<input class="btn" type="button" value="连接" id="connect"
+			onclick="connect()" /> <input class="btn" type="button" value="断开连接"
+			id="disconnect" onclick="disconnect()" />
+	</div>
+	<div class="info" id="message"></div>
+	<div class="info" id="content">
+		请输入你的名字： <input class="txt" id="name" /> <input class="btn"
+			type="button" value="发送" id="send" onclick="send()" />
+	</div>
+
+</body>
+<script th:src="@{sockjs.min.js}"></script>
+<script th:src="@{stomp.js}"></script>
+<script type="text/javascript">
+	var stompClient = null;
+	function setConnected(connected){
+		document.getElementById("connect").disable=connected;
+		document.getElementById("disconnect").disable=!connected;
+		document.getElementById('content').style.visibility=connected?'visible':'hidden';
+		document.getElementById("message").innerTxt = "";
+	}
+	
+	function connect(){
+		var socket=new SockJS('/norfantalk');//1
+		stompClient=Stomp.over(socket);//2
+		stompClient.connect({},function(frame){//3
+			setConnected(true);
+		    console.log('Connected:'+frame)
+		    stompClient.subscribe('/topic/response',function(response){
+		    	showMessage(JSON.parse(response.body).responseMessage);
+		    });
+		});
+		
+		
+		
+	}
+	function disconnec(){
+		if(stompClient!=null){
+			stompClient.disconnect();
+		}
+		setConnected(false);
+		console.log("Disconnected.");
+	}
+	
+	function send(){
+		var name = document.getElementById("name").value;
+		stompClient.send("/welcome", {}, JSON.stringify({"name":name}));
+		
+	}
+	function showMessage(message){
+		var message = document.getElementById("message");
+		message.innerText=message;
+	}
+</script>
+</html>
